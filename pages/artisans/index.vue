@@ -1,11 +1,4 @@
 <script setup lang="ts">
-import ArtisanCard from '@/components/ArtisanCard.vue'
-import PageNavigation from '@/components/PageNavigation.vue'
-import Title from '@/components/Title.vue'
-import { onMounted, ref, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import LoadingAnimation from '@/components/LoadingAnimation.vue'
-import { useHead } from '@unhead/vue'
 
 useHead({
   title: 'Artisans | CMOC Viewing Tool',
@@ -18,10 +11,6 @@ useHead({
 const route = useRoute()
 const router = useRouter()
 const current_page = ref(route.query.page ? parseInt(route.query.page as string) : 1)
-
-const updateCurrentPage = (newPage: number) => {
-  current_page.value = newPage
-}
 
 const { data, status } = useAsyncData('artisans', () => {
     return $fetch('/api/artisans', {
@@ -43,16 +32,16 @@ const { data, status } = useAsyncData('artisans', () => {
         alt="CMOC Background Image"
       >
       <div class="container translate-y-10">
-        <Title name="Artisans" />
+        <TitlePage>Artisans</TitlePage>
         <div v-if="data">
           <ul v-if="status !== 'pending'" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 sm:gap-10 gap-3 mb-6 -translate-y-8">
-            <ArtisanCard v-for="artisan in data.data" :key="artisan.wii_number" v-bind="artisan" />
+            <ArtisanCard v-for="artisan in data.data" :key="artisan.artisanId" v-bind="artisan" />
           </ul>
           <LoadingAnimation v-if="status === 'pending'" />
           <PageNavigation
             :current_page="current_page"
             :total_pages="data.total_pages"
-            @update:current_page="updateCurrentPage"
+            @update:current_page="(value) => { current_page = value; router.push({ query: { page: value } }) }"
           />
         </div>
         <div v-else class="p-20 w-full h-30 rounded-[18px] border-4 border-gray-400 dark:border-slate-500 border-dashed flex items-center justify-center relative">
