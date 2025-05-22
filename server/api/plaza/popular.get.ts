@@ -49,7 +49,7 @@ export default defineEventHandler(async (event) => {
     const data = await query.execute({ pOffset: offset })
 
     const popular = data.map((row) => {
-        return { ...row, miiData: row.miiData ? convertToB64(row.miiData) : '' };
+        return { ...row, miiData: row.miiData ? convertToB64(row.miiData as unknown as Uint8Array) : '' };
     })
 
     const total_items = await db.select({ count: count() }).from(miis);
