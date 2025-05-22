@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+@theme {
+    --font-rubik: "Rubik", sans-serif;
+    --font-gilroy: "Gilroy", sans-serif;
+    --font-space-grotesk: "Space Grotesk", sans-serif;
+    --font-manrope: "Manrope", sans-serif;
+    --font-pixelify: "Pixelify", sans-serif;
+}
+
+@layer base {
+    body {
+        @apply bg-white dark:bg-slate-800 text-white
+    }
+}
+
+@layer components {
+    .emoji {
+        @apply h-7.5
+      }
+
+    .outline-text {
+        @apply font-space-grotesk font-extrabold text-transparent [-webkit-text-stroke-width:3px] [-webkit-text-stroke-color:#00000060] dark:[-webkit-text-stroke-color:#ffffff60];
+    }
+
+    .header-link {
+        @apply text-black dark:text-white p-2.5 rounded-lg relative overflow-hidden transition-all duration-300 hover:scale-[1.02]! hover:backdrop-filter hover:backdrop-blur-sm hover:px-4 hover:rounded-lg hover:transition-all hover:duration-300 hover:overflow-hidden hover:bg-[#00000010]! dark:hover:bg-[#ffffff10]!;
+    }
+
+    .header-link-index {
+        @apply bg-gradient-to-b from-gray-400/60 to-gray-400 border-gray-400 dark:from-slate-700/60 dark:to-slate-700 dark:border-slate-700 relative transition-all duration-200 px-7.5 py-5 rounded-b-[4px];
+    }
+
+    
+    .animated-link {
+        @apply relative inline-block transition-all duration-500 hover:pl-6.25 hover:transition-all hover:duration-500 before:absolute before:opacity-0 before:size-6 before:font-black before:-left-0.5 before:transition-opacity before:duration-500 before:ease-in before:hover:left-0 before:hover:opacity-100;
+
+        /* &::before {
+            background-image: url("data:image/svg+xml,%3Cpath fill=%5C'currentColor%5C' d=%5C'M512 256a256 256 0 1 0-512 0a256 256 0 1 0 512 0M271 135c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-87 87l87 87c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0L167 273c-9.4-9.4-9.4-24.6 0-33.9z%5C'/%3E");
+        } */
+    }
+
+    .dissolve {
+        @apply transform translate-y-[-150px] [mask-image:linear-gradient(to_bottom,rgba(0,0,0,0.7),rgba(0,0,0,0))] [-webkit-mask-image:-webkit-gradient(linear,left_top,left_bottom,from(rgba(0,0,0,0.7)),to(rgba(0,0,0,0)))] dark:[mask-image:linear-gradient(to_bottom,rgba(0,0,0,0.2),rgba(0,0,0,0))] dark:[-webkit-mask-image:-webkit-gradient(linear,left_top,left_bottom,from(rgba(0,0,0,0.2)),to(rgba(0,0,0,0)))]
+    }
+
+    .blur {
+        @apply absolute top-0 left-0 size-7.5 hidden z-0 pointer-events-none rounded-[50%] bg-white blur-sm opacity-3 scale-400 translate-full
+    }
+
+    .cmoc-bg {
+        background: url('/img/cmoc-bg.png') no-repeat center center / cover;
+        background-color: rgba(32, 41, 58, 0.6);
+
+        @media (prefers-color-scheme: dark) {
+        & {
+            background-color: rgba(32, 41, 58, 0.8); /* Darker for dark mode */
+            background-blend-mode: multiply; /* Different blend mode for dark mode */
+            box-shadow: 
+                0px 0px 120px #9bd7330d, /* Dark mode shadow, slightly more visible */
+                0px 0px 90px #c33ed20d,  /* Slightly lighter and smaller */
+                0px 0px 70px #7ba7dd0d,  /* Even lighter and smaller */
+                0px 0px 50px #eb7f1b0d,  /* Lighter still */
+                0px 0px 30px #7ba7dd0d;
+        }
+        }
+    }
+
+    .btn {
+    @apply p-4 pl-8 pr-8 border-2 border-gray-200 bg-gray-200 hover:bg-gray-300 hover:border-gray-500 dark:border-slate-800 dark:bg-slate-600 dark:hover:bg-slate-700 text-black transition-all;
+  }
+
+  .bg-gold {
+    @apply bg-[linear-gradient(145deg,_#ffd70020,_#ffdf0030,_#ffd70030)] border border-[1px_solid_#ffd70030] p-3 rounded-xl
+  }
+
+  .bg-silver {
+    @apply bg-[linear-gradient(145deg,_#c0c0c020,_#dcdcdc30,_#c0c0c030)] border border-[1px_solid_#dcdcdc30] p-3 rounded-xl
+  }
+
+  .bg-bronze {
+    @apply bg-[linear-gradient(145deg,_#cd7f3220,_#e07a2d30,_#cd7f3230)] border border-[1px_solid_#e07a2d30] p-3 rounded-xl
+  }
+}
+
+@layer utilities {
+    .container {
+        @apply max-w-screen-xl mx-auto px-3 sm:px-5 md:px-10 lg:px-16 overflow-hidden;
+    }
+}
