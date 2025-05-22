@@ -1,13 +1,23 @@
 <script setup lang="ts">
-import type { Mii } from '~/types/data';
 import { countries } from '~/types/countries'
 import { skills } from '~/types/skills'
-import * as twemoji from 'twemoji'
+import twemoji from 'twemoji';
 
-const props = defineProps<Mii>()
+interface MiiProps {
+    entryId: number | null
+    miiData: string | null
+    nickname: string | null
+    countryId: number | null
+    skill: number | null
+    permLikes: number | null
+    initials: string | null
+    ranking: number | null
+}
 
-const country_flag = computed(() => (countries[props.countryId].flag))
-const skillName = computed(() => { return props.skill !== undefined ? (skills as Record<number, { name: string }>)[props.skill].name : ''})
+const props = defineProps<MiiProps>()
+
+const country_flag = computed(() => (countries[props.countryId!].flag))
+const skillName = computed(() => { return props.skill !== undefined ? (skills as Record<number, { name: string }>)[props.skill!].name : ''})
 
 const target = ref<HTMLElement | null>(null)
 const { handleMouseMove, resetTransform } = useCardHover(target)
@@ -18,7 +28,7 @@ const mouseEffect = reactive({
 })
 
 const countryFlagHTML = computed(() => {
-    return twemoji.default.parse(country_flag.value, { base: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/' })
+    return twemoji.parse(country_flag.value, { base: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/' })
 })
 
 const rankingBg = computed(() => {
@@ -35,7 +45,7 @@ const rankingBg = computed(() => {
 })
 
 const encoded_entry = encodeEntryId(props.entryId!)
-const mii_img = await renderMii(props.miiData)
+const mii_img = await renderMii(props.miiData!)
 
 const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text)
