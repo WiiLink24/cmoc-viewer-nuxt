@@ -1,7 +1,5 @@
 import { pgTable, serial, varchar, integer, bigint, boolean, timestamp } from "drizzle-orm/pg-core"
-import { relations, sql } from "drizzle-orm"
-
-
+import { relations, type InferSelectModel } from "drizzle-orm"
 
 export const artisans = pgTable("artisans", {
 	artisanId: serial("artisan_id").notNull(),
@@ -81,3 +79,8 @@ export const miisRelations = relations(miis, ({ one }) => ({
 		references: [artisans.artisanId],
 	}),
 }))
+
+export type Mii = InferSelectModel<typeof miis>
+export type Artisan = InferSelectModel<typeof artisans>
+export type Contest = InferSelectModel<typeof contests>
+export type ContestMii = InferSelectModel<typeof contestMiis>
