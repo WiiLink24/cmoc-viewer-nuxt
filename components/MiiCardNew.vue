@@ -11,7 +11,7 @@ interface MiiProps {
     skill: number | null
     permLikes: number | null
     initials: string | null
-    ranking: number | null
+    ranking?: number | null
 }
 
 const props = defineProps<MiiProps>()
