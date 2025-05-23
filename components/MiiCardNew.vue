@@ -37,6 +37,8 @@ const countryFlagHTML = computed(() => {
     return twemoji.parse(country_flag.value, { base: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/' })
 })
 
+const encodedEntryId = encodeEntryId(props.entryId!)
+
 const rankingBg = computed(() => {
     switch (props.ranking) {
         case 1:
@@ -50,7 +52,6 @@ const rankingBg = computed(() => {
     }
 })
 
-const encoded_entry = encodeEntryId(props.entryId!)
 const mii_img = await renderMii(props.miiData!)
 
 const copyToClipboard = (text: string) => {
@@ -73,8 +74,8 @@ const copyToClipboard = (text: string) => {
         <h1 class="text-3xl relative bottom-3 text-center flex flex-col gap-1">
             {{ props.nickname }}
             <p class="text-sm text-black opacity-60">
-                {{ props.entryId }}
-                <Icon :name="mouseEffect.mouseClick ? 'fa6-solid:check' : 'fa6-regular:copy'" class="cursor-pointer transition-all" @mouseenter="mouseEffect.mouseOver = true" @mouseleave="mouseEffect.mouseOver = false" @click="mouseEffect.mouseClick = true; copyToClipboard(props.entryId?.toString()!)" />
+                {{ encodedEntryId }}
+                <Icon :name="mouseEffect.mouseClick ? 'fa6-solid:check' : 'fa6-regular:copy'" class="cursor-pointer transition-all" @mouseenter="mouseEffect.mouseOver = true" @mouseleave="mouseEffect.mouseOver = false" @click="mouseEffect.mouseClick = true; copyToClipboard(encodedEntryId)" />
             </p>
         </h1>
         </div>
