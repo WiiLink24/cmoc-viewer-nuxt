@@ -46,7 +46,7 @@ const { data, status } = useAsyncData('artisans', () => {
         </div>
         <div v-else class="p-20 w-full h-30 rounded-[18px] border-4 border-gray-400 dark:border-slate-500 border-dashed flex items-center justify-center relative">
           <div class="flex flex-col items-center gap-3 text-gray-500 dark:text-slate-400">
-              <Icon name="fa6-solid:bomb" class="size-15" />
+              <Icon name="fa6-solid:bomb" class="text-6xl" />
               <h2 class="w-96 text-center relative">Could not establish a connection to the Plaza database, please try again later...</h2>
           </div>
         </div>
