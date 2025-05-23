@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const url = import.meta.env.VITE_CMOC_SERVER
+const url = useRuntimeConfig().public.CMOC_SERVER
 
 interface ContestProps {
   contestId: number,

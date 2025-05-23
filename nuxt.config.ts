@@ -16,6 +16,11 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()],
   },
+  runtimeConfig: {
+    public: {
+      CMOC_SERVER: process.env.CMOC_SERVER || ''
+    }
+  }
   /* nitro: {
     experimental: {
       openAPI: true,
