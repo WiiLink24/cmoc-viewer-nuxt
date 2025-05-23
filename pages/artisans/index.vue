@@ -33,18 +33,19 @@ const { data, status } = useAsyncData('artisans', () => {
       >
       <div class="container translate-y-10">
         <TitlePage>Artisans</TitlePage>
-        <div v-if="data">
-          <ul v-if="status !== 'pending'" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 sm:gap-10 gap-3 mb-6 -translate-y-8">
+        <div>
+          <ul v-if="status !== 'pending' && data" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 sm:gap-10 gap-3 mb-6 -translate-y-8">
             <ArtisanCard v-for="artisan in data.data" :key="artisan.artisanId" v-bind="artisan" />
           </ul>
           <LoadingAnimation v-if="status === 'pending'" />
           <PageNavigation
+            v-if="data"
             :current_page="current_page"
             :total_pages="data.total_pages"
             @update:current_page="(value) => { current_page = value; router.push({ query: { page: value } }) }"
           />
         </div>
-        <div v-else class="p-20 w-full h-30 rounded-[18px] border-4 border-gray-400 dark:border-slate-500 border-dashed flex items-center justify-center relative">
+        <div v-if="status === 'error'" class="p-20 w-full h-30 rounded-[18px] border-4 border-gray-400 dark:border-slate-500 border-dashed flex items-center justify-center relative">
           <div class="flex flex-col items-center gap-3 text-gray-500 dark:text-slate-400">
               <Icon name="fa6-solid:bomb" class="text-6xl" />
               <h2 class="w-96 text-center relative">Could not establish a connection to the Plaza database, please try again later...</h2>
