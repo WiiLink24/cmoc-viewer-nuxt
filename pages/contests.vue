@@ -38,7 +38,7 @@ useHead({
             <span class="hidden lg:block">Previous Contests</span>
           </RouterLink>
         </nav>
-        <RouterView />
+        <NuxtPage />
       </div>
   </div>
 </template>
