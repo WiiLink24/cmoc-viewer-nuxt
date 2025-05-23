@@ -18,9 +18,9 @@ const contests = data.value?.filter((contest) => contest.status === 'open')
     <div>
         <ul v-if="contests" class="flex flex-col gap-3">
             <div v-for="contest in contests" :key="contest.contestId">
-            <RouterLink :to="`/contests/${contest.contestId}`">
+            <NuxtLink :href="{ name: 'contests-id', params: { id: contest.contestId }}">
                 <ContestCard v-bind="contest" />
-            </RouterLink>
+            </NuxtLink>
             </div>
         </ul>
         <div v-else class="text-red-500">

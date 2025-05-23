@@ -21,7 +21,7 @@ const closed_contests = data.value?.filter((contest) => contest.status === 'clos
         <ul v-if="judging_contests.length > 0" class="flex flex-col gap-3">
             <h2>Contests being judged</h2>
             <div v-for="contest in judging_contests" :key="contest.contestId">
-            <NuxtLink :href="{ name: 'contest-id', params: { id: contest.contestId }}">
+            <NuxtLink :href="{ name: 'contests-id', params: { id: contest.contestId }}">
                 <ContestCard  v-bind="contest" />
             </NuxtLink>
         </div>
@@ -29,7 +29,7 @@ const closed_contests = data.value?.filter((contest) => contest.status === 'clos
         <ul v-if="results_contests.length > 0" class="flex flex-col gap-3">
             <h2>Contests displaying results</h2>
             <div v-for="contest in results_contests" :key="contest.contestId">
-            <NuxtLink :href="{ name: 'contest-id', params: { id: contest.contestId }}">
+            <NuxtLink :href="{ name: 'contests-id', params: { id: contest.contestId }}">
                 <ContestCard v-bind="contest" />
             </NuxtLink>
         </div>
@@ -37,7 +37,7 @@ const closed_contests = data.value?.filter((contest) => contest.status === 'clos
         <ul v-if="closed_contests.length > 0" class="flex flex-col gap-3">
             <h2>Closed contests</h2>
             <div v-for="contest in closed_contests" :key="contest.contestId">
-            <NuxtLink :href="{ name: 'contest-id', params: { id: contest.contestId }}">
+            <NuxtLink :href="{ name: 'contests-id', params: { id: contest.contestId }}">
                 <ContestCard v-bind="contest" />
             </NuxtLink>
         </div>
