@@ -70,7 +70,7 @@ const isMobile = ref(breakpoints.smaller("lg"));
             <Icon name="fa6-solid:star" /> Artisans
           </NuxtLink>
         </li>
-        <li class="w-full lg:w-auto" @click="(isMenuOpen = false, isLocked = false)">
+        <li class="w-full lg:w-auto border-r-2 border-gray-200/30 pr-4" @click="(isMenuOpen = false, isLocked = false)">
           <NuxtLink
             to="/contests/active"
             class="header-link w-full block lg:inline lg:w-auto"
@@ -80,8 +80,7 @@ const isMobile = ref(breakpoints.smaller("lg"));
             <Icon name="fa6-solid:trophy" /> Contests
           </NuxtLink>
         </li>
-        <li class="opacity-30 mr-3 hidden lg:block">|</li>
-        <li class="hidden lg:block">
+        <li class="hidden lg:block pl-4">
           <teleport to="#search-hook" :disabled="!isMobile">
             <NuxtLink
               to="/search"
