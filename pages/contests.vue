@@ -27,15 +27,15 @@ useHead({
             active-class="bg-green-500 dark:bg-green-500 hover:bg-green-500 dark:hover:bg-green-500"
           >
             <Icon name="fa6-solid:trophy" />
-            <span class="mobile-hide">Active Contests</span>
+            <span class="hidden lg:block">Active Contests</span>
           </RouterLink>
           <RouterLink
             to="/contests/previous"
             class="flex items-center gap-2 px-4 sm:py-2 py-3 text-white hover:bg-gray-500 dark:hover:bg-slate-500 cursor-pointer hover:no-underline rounded-[14px] rounded-l-md transition-all"
             active-class="bg-blue-500 dark:bg-blue-500 hover:bg-blue-500 dark:hover:bg-blue-500"
           >
-            <Icon name="fa6-solid:history" />
-            <span class="mobile-hide">Previous Contests</span>
+            <Icon name="fa6-solid:clock-rotate-left" />
+            <span class="hidden lg:block">Previous Contests</span>
           </RouterLink>
         </nav>
         <RouterView />
