@@ -11,7 +11,13 @@ interface MiiProps {
     skill: number | null
     permLikes: number | null
     initials: string | null
+    gender: number | null
     ranking?: number | null
+    artisan: {
+        artisanId: number
+        name: string
+        isMaster: boolean
+    } | null
 }
 
 const props = defineProps<MiiProps>()
@@ -74,8 +80,21 @@ const copyToClipboard = (text: string) => {
         </div>
         <span class="w-full text-2xl flex items-end justify-between gap-1 flex-nowrap z-10">
             <span class="flex flex-col gap-1">
-                <Icon name="fa6-solid:thumbs-up" class="text-xl" />
-                {{ props.permLikes }}
+                <span>
+                    <Icon name="fa6-solid:thumbs-up" class="text-xl" />
+                    {{ props.permLikes }}
+                </span>
+                <span v-if="props.artisan?.name" class="text-sm opacity-60">
+                    by
+                    <NuxtLink :href="{ name: 'artisans-id', params: { id: props.artisan.artisanId }}" class="text-sm text-black hover:underline" :class="{ 'p-1 px-2 bg-orange-400 rounded-full': props.artisan.isMaster, 'underline': !props.artisan.isMaster }">
+                        <span v-if="props.artisan.isMaster">◆</span>
+                        {{ props.artisan?.name }}
+                        <span v-if="props.artisan.isMaster">◆</span>
+                    </NuxtLink>
+                </span>
+            </span>
+            <span class="flex flex-col gap-1">
+                <Icon :name="props.gender === 1 ? 'fa6-solid:person' : 'fa6-solid:person-dress'" class="text-right"/>
             </span>
         </span>
         <span class="bottom-0 text-8xl font-bold text-white opacity-5 absolute -mr-3 5 -mb-4 select-none self-end z-0">

@@ -9,7 +9,7 @@ export const useCardHover = (target: Ref<HTMLElement | null>) => {
         const mouseY = event.clientY - top.value - height.value / 2;
 
         const rotateY = (mouseX / width.value) * 20
-        const rotateX = (mouseY / height.value) * 20
+        const rotateX = (-mouseY / height.value) * 20
 
         target.value.style.transform = `perspective(800px) rotateY(${rotateY}deg) rotateX(${rotateX}deg) scale(1.05)`;
 
