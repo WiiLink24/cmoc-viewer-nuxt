@@ -98,8 +98,9 @@ const copyToClipboard = (text: string) => {
                     </NuxtLink>
                 </span>
             </span>
-            <span class="flex flex-col gap-1">
+            <span class="flex flex-col gap-1 items-end">
                 <Icon :name="props.gender === 1 ? 'fa6-solid:person' : 'fa6-solid:person-dress'" class="text-right"/>
+                <span v-if="props.skill" class="text-sm opacity-60">{{ skillName }}</span>
             </span>
         </span>
         <span class="bottom-0 text-8xl font-bold text-white opacity-5 absolute -mr-3 5 -mb-4 select-none self-end z-0">
