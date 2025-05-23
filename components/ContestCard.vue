@@ -1,9 +1,18 @@
 <script setup lang="ts">
-import type { Contest } from '~/types/data';
-import { defineProps, computed, ref, watch } from 'vue'
 const url = import.meta.env.VITE_CMOC_SERVER
 
-const props = defineProps<Contest>()
+interface ContestProps {
+  contestId: number,
+  englishName: string,
+  status:  'open' | 'judging' | 'results' | 'closed',
+  openTime: string,
+  closeTime: string,
+  hasSouvenir: boolean,
+  hasThumbnail: boolean,
+  hasSpecialAward: boolean
+}
+
+const props = defineProps<ContestProps>()
 const hover = ref(false)
 const rotationDegree = ref(0)
 
@@ -16,17 +25,17 @@ watch(hover, (newValue) => {
   }
 })
 
+const currentDate = new Date()
+
 const daysRemaining = computed(() => {
-  const closeDate = new Date(props.close_time)
-  const currentDate = new Date()
+  const closeDate = new Date(props.closeTime)
   const differenceInTime = closeDate.getTime() - currentDate.getTime()
   const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24))
   return differenceInDays
 })
 
 const isNew = computed(() => {
-  const openDate = new Date(props.open_time);
-  const currentDate = new Date();
+  const openDate = new Date(props.openTime);
   const differenceInTime = openDate.getTime() - currentDate.getTime()
   const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
   return differenceInDays < 5 && differenceInDays > 0;
@@ -49,7 +58,7 @@ const isNew = computed(() => {
               {{ status }}
             </p>
               <span class="opacity-60">
-                ({{ contest_id }})
+                ({{ contestId }})
               </span>
               <div v-if="isNew" class="ml-3 box sb4">New!</div>
               <div v-if="daysRemaining <= 2 && daysRemaining >= 0" class="ml-3 box-red sb4-red">Closing soon!</div>
@@ -57,12 +66,12 @@ const isNew = computed(() => {
         </div>
         <div class="mt-2 bg-white p-1 rounded-xl flex flex-row gap-5 items-center justify-between">
           <img
-            :src="`${url}/assets/contest/${contest_id}/thumbnail.jpg`"
+            :src="`${url}/assets/contest/${contestId}/thumbnail.jpg`"
             alt="Thumbnail Preview"
             class="p-1 w-32 h-32 rounded-xl"
           >
           <h2 id="contestName" class="mr-6 col-start-1 col-span-full text-2xl" style="color:black !important;">
-            {{ english_name }} <b v-if="has_souvenir"> | <Icon name="fa6-solid:gift"/></b>
+            {{ englishName }} <b v-if="hasSouvenir"> | <Icon name="fa6-solid:gift"/></b>
           </h2>
         </div>
       </div>
