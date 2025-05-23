@@ -10,7 +10,7 @@ const opacity = computed(() => Math.max(0, 0.5 - y.value / 100))
 
 <template>
   <h1
-    class="text-9xl outline-text uppercase whitespace-nowrap text-ellipsis opacity-50 z-0 relative flex items-center justify-between overflow-hidden invert dark:invert-0"
+    class="text-9xl font-light outline-text uppercase whitespace-nowrap text-ellipsis opacity-50 z-0 relative flex items-center justify-between overflow-hidden invert dark:invert-0"
     :style="{ transform: `translateY(${translateY}px)`, opacity: opacity }"
   >
     <slot />
