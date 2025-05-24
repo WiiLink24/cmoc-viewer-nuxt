@@ -13,7 +13,7 @@ interface MiiProps {
     initials: string | null
     gender: number | null
     ranking?: number | null
-    artisan: {
+    artisan?: {
         artisanId: number
         name: string
         isMaster: boolean
@@ -60,8 +60,8 @@ const copyToClipboard = (text: string) => {
 </script>
 
 <template>
-    <li ref="target" class="p-3 rounded-xl border flex flex-col justify-between relative z-20 bg-gray-100 dark:border-slate-600/60 dark:bg-slate-700/60 dark:text-white hover:shadow-xl transition-all overflow-hidden backdrop-blur-md bg-opacity-50 has-[img:hover]:bg-[#36d14160] has-[img:hover]:border has-[img:hover]:border-green-700" :class="rankingBg" @mousemove="handleMouseMove" @mouseleave="resetTransform">
-        <span v-if="ranking" class="-top-4 text-7xl font-bold dark:text-white opacity-5 z-0 absolute select-none self-start text-black -ml-2" :class="{ 'mb-[7.5rem]' : !props.nickname }">{{ props.ranking }}</span>
+    <li ref="target" class="p-3 rounded-xl border flex flex-col justify-between relative z-20 bg-gray-100 dark:border-slate-600/60 dark:bg-slate-700/60 dark:text-white hover:shadow-xl transition-all overflow-hidden backdrop-blur-md bg-opacity-50 has-[.miiImg:hover]:bg-[#36d14160] has-[.miiImg:hover]:border has-[.miiImg:hover]:border-green-700" :class="rankingBg" @mousemove="handleMouseMove" @mouseleave="resetTransform">
+        <span v-if="ranking" class="-top-4 text-7xl font-bold dark:text-white opacity-5 z-0 absolute select-none self-start -ml-2" :class="{ 'mb-[7.5rem]' : !props.nickname }">{{ props.ranking }}</span>
         <div class="z-10 flex flex-col w-full items-center hover:z-30">
             <!-- eslint-disable-next-line vue/no-v-html -->
             <span class="self-end text-2xl" v-html="countryFlagHTML" />
@@ -69,11 +69,11 @@ const copyToClipboard = (text: string) => {
                 <button class="top-2 left-2 rounded tooltip shadow-lg p-2 px-3 bg-green-600 hover:bg-green-700 text-white cursor-pointer absolute opacity-0 transition-opacity group-hover:opacity-100" @click="props.nickname ? downloadMii(props.nickname, encoded_entry, props.miiData) : downloadMii([contest_id, ranking], encoded_entry, props.miiData)">
                     <Icon name="fa6-solid:download" />
                 </button>
-                <img :src="mii_img" :alt="`${props.nickname}'s Mii`" class="w-28 bottom-3 cursor-pointer relative" @click="props.nickname ? downloadMii(props.nickname, encoded_entry, props.miiData) : downloadMii([contest_id, ranking], encoded_entry, props.miiData)">
+                <img :src="mii_img" :alt="`${props.nickname}'s Mii`" class="w-28 bottom-3 cursor-pointer relative miiImg" @click="props.nickname ? downloadMii(props.nickname, encoded_entry, props.miiData) : downloadMii([contest_id, ranking], encoded_entry, props.miiData)">
             </div>
         <h1 class="text-3xl relative bottom-3 text-center flex flex-col gap-1">
             {{ props.nickname }}
-            <p class="text-sm text-black opacity-60">
+            <p class="text-sm opacity-60">
                 {{ encodedEntryId }}
                 <Icon
                     :name="mouseEffect.mouseClick ? 'fa6-solid:check' : 'fa6-regular:copy'" class="cursor-pointer transition-all"
@@ -91,7 +91,7 @@ const copyToClipboard = (text: string) => {
                 </span>
                 <span v-if="props.artisan?.name" class="text-sm opacity-60">
                     by
-                    <NuxtLink :href="{ name: 'artisans-id', params: { id: props.artisan.artisanId }}" class="text-sm text-black hover:underline" :class="{ 'p-1 px-2 bg-orange-400 rounded-full': props.artisan.isMaster, 'underline': !props.artisan.isMaster }">
+                    <NuxtLink :href="{ name: 'artisans-id', params: { id: props.artisan.artisanId }}" class="text-sm hover:underline" :class="{ 'p-1 px-2 bg-orange-400 rounded-full': props.artisan.isMaster, 'underline': !props.artisan.isMaster }">
                         <span v-if="props.artisan.isMaster">◆</span>
                         {{ props.artisan?.name }}
                         <span v-if="props.artisan.isMaster">◆</span>

@@ -7,7 +7,6 @@ interface ArtisanProps {
   name: string | null;
   countryId: number | null;
   wiiNumber: number | null;
-  macAddress: string | null;
   miiData: string | null;
   numberOfPosts: number;
   totalLikes: number;
@@ -54,7 +53,7 @@ const countryFlagHTML = computed(() => {
           :src="mii_img"
           :alt="`${props.name}'s Mii`"
         >
-        <h1 class="text-3xl relative bottom-5 text-center text-black">
+        <h1 class="text-3xl relative bottom-5 text-center">
           {{ props.name }}
         </h1>
       </div>
