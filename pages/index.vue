@@ -11,6 +11,15 @@ const tools = [
 ]
 
 const hoveredTool = ref<string>('')
+
+const { data: newMiis } = await useAsyncData('newMiis', () =>
+  $fetch('/api/plaza/popular', {
+    method: 'GET',
+    params: {
+      page: 1
+    },
+  })
+);
 </script>
 
 <template>
@@ -77,6 +86,16 @@ const hoveredTool = ref<string>('')
         </li>
       </ul>
       <div class="container translate-y-22.5">
+        <h1 class="font-bold text-4xl">Newest Miis</h1>
+        <div class="mt-3 mb-8 scroll-container">
+          <ul class="mt-3 inline-flex flex-row gap-3">
+            <MiiCardNew v-for="mii in newMiis?.data" :key="mii.entryId" class="w-75 relative" v-bind="mii" />
+            <MiiCardNew v-for="mii in newMiis?.data" :key="`duplicate-${mii.entryId}`" class="w-75 relative" v-bind="mii" />
+            
+          </ul>
+        </div>
+      </div>
+      <div class="container translate-y-22.5">
           <div class="mt-6 mb-10">
             <h1 class="font-bold text-4xl">What's new on the Check Mii Out Channel?</h1>
             <div class="p-6 mt-3 border-4 border-slate-600 border-dashed rounded-3xl block relative">
@@ -132,7 +151,6 @@ const hoveredTool = ref<string>('')
             {{ tool.name }}
             </NuxtLink>
         </div>
-        <!-- La zone de texte utilise le variant peer-hover pour afficher le descriptif du premier bouton -->
         <div class="mb-10 dark:text-white hidden lg:block">
           <div>
             <p
