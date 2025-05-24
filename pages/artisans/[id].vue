@@ -1,7 +1,7 @@
 <script setup lang="ts">
-/* import { fetchArtisan, renderMii, downloadMii, formatWiiNumber } from '@/backend'
-import { formatDate } from '@/date_format'
-import { isValidWiiNumber } from 'nwc24js' */
+import { isValidWiiNumber } from 'nwc24js'
+import type { Artisan, Mii } from '~/drizzle/schema'
+import { formatWiiNumber } from '~/utils/format'
 
 useHead({
   title: 'Artisan View | CMOC Viewing Tool',
@@ -16,8 +16,8 @@ const router = useRouter()
 const current_page = ref(route.query.page ? parseInt(route.query.page as string) : 1)
 const artisanAsyncName = computed(() => `artisan-${route.params.id}`);
 
-const { data, status } = useAsyncData(artisanAsyncName.value, () => {
-    return $fetch('/api/artisans/100000005', {
+const { data, status } = useAsyncData<{ artisan_data: Artisan, entries_data: { total_pages: number, miis_data: Mii[] }}>(artisanAsyncName.value, () => {
+    return $fetch('/api/artisans/' + route.params.id, {
         params: {
             page: current_page.value,
         }
@@ -26,6 +26,21 @@ const { data, status } = useAsyncData(artisanAsyncName.value, () => {
     lazy: true,
     watch: [current_page],
 })
+
+const lastPostFormatted = computed(() => {
+  if (data.value && data.value.artisan_data && data.value.artisan_data.lastPost) {
+    return formatDate(data.value.artisan_data.lastPost);
+  }
+  return '';
+});
+
+const isArtisanNumberValid = computed(() => {
+  if (data.value && data.value.artisan_data && data.value.artisan_data.wiiNumber) {
+    return isValidWiiNumber(formatWiiNumber(data.value.artisan_data.wiiNumber));
+  }
+  return false;
+});
+
 </script>
 
 <template>
@@ -36,29 +51,31 @@ const { data, status } = useAsyncData(artisanAsyncName.value, () => {
         <ArtisanCard v-bind="data.artisan_data" />
       </ul>
       <div class="pb-3 flex flex-col items-start justify-end">
-        <Title :name="data.artisan_data.name" class="mobile-hide"/>
-        <div class="sm:-translate-y-12" style="width:100%;">
+        <TitlePage class="hidden lg:block">{{ data.artisan_data.name }}</TitlePage>
+        <div class="sm:-translate-y-12 w-full">
             <div class="w-full mb-3 flex sm:flex-row sm:w-full flex-col sm:items-center items-start justify-between gap-3 relative">
         <button 
-        class="p-3 pl-6 pr-6 sm-width bg-green-500/60 border-1 border-green-60 backdrop-blur-md rounded-md hover:bg-green-600 transition-all"
-        @click="downloadMii(data.artisan_data.name, data.artisan_data.entryId, data.artisan_data.mii_data)"
+        class="p-3 pl-6 pr-6 w-full lg:w-auto bg-green-500/60 border-1 border-green-60 backdrop-blur-md rounded-md hover:bg-green-600 transition-all"
+        @click="downloadMii(data.artisan_data.name!, data.artisan_data.artisanId.toString(), data.artisan_data.miiData)"
         ><Icon name="fa6-solid:download" /> Download {{ data.artisan_data.name }}'s Mii</button>
-        <span v-if="data.artisan_data.isMaster" class="sm-width p-1 pl-2 pr-2 text-md font-bold text-center select-none rounded-full bg-orange-400"
+        <span v-if="data.artisan_data.isMaster" class="w-full lg:w-auto p-1 pl-2 pr-2 text-md font-bold text-center select-none rounded-full bg-orange-400"
         >◆ Master Mii Artisan ◆
         </span>
         </div>
-        <div class="flex flex-col text-xl text-black">
+        <div class="flex flex-col text-xl">
           <span class="opacity-30 text-sm">Wii Number</span>
-          <div class="flex flex-row gap-3">{{ formatWiiNumber(data.artisan_data.wiiNumber) }}
+          <div class="flex flex-row gap-3">{{ formatWiiNumber(data.artisan_data.wiiNumber!) }}
           <span v-if="isArtisanNumberValid" class="text-green-500"><Icon name="fa6-solid:check" /></span>
-          <span v-else class="text-red-500"><i class="fa-solid fa-triangle-exclamation text-yellow-300 cursor-pointer" title="This Wii Number was generated on Dolphin Emulator." onmouseover="document.getElementById('dolWarn').style.opacity = 1;" onmouseleave="document.getElementById('dolWarn').style.opacity = 0;"/></span>
+          <span v-else class="text-red-500">
+            <Icon name="fa6-solid:triangle-exclamation" class="text-yellow-300 cursor-pointer" title="This Wii Number was generated on Dolphin Emulator or is invalid." />
+          </span>
         </div>
         </div>
-        <div class="flex flex-row items-center text-black">
-          <div class="flex flex-col justify-end text-left text-black">
+        <div class="flex flex-row items-center">
+          <div class="flex flex-col justify-end text-left">
             <span class="opacity-30 text-sm">Last posted on </span>
-            <p id="lastPost" class="text-xl text-black">
-              {{ lastPostFormatted }}
+            <p class="text-xl">
+              {{ data.entries_data.miis_data.length > 0 ? lastPostFormatted : 'Never posted' }}
           </p>
           </div>
         </div>
@@ -70,8 +87,8 @@ const { data, status } = useAsyncData(artisanAsyncName.value, () => {
       <h1 class="font-bold text-4xl">Miis</h1>
       <h2 class="opacity-60 text-right">{{ data.artisan_data.name }} has submitted {{ data.artisan_data.numberOfPosts }} Miis.</h2>
     </div>
-    <div v-if="data.entries_data.miis_data && data.entries_data.miis_data.length > 0">
-      <ul v-id="status !== 'pending'" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 sm:gap-10 gap-3">
+    <div v-if="data.entries_data.miis_data.length > 0">
+      <ul v-if="status !== 'pending'" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 sm:gap-10 gap-3">
         <MiiCardNew v-for="entries in data.entries_data.miis_data" :key="entries.entryId" v-bind="entries" />
       </ul>
       <LoadingAnimation v-if="status === 'pending'" />
@@ -81,9 +98,9 @@ const { data, status } = useAsyncData(artisanAsyncName.value, () => {
         class="mt-10"
         @update:current_page="(value) => { current_page = value; router.push({ query: { page: value } }) }" />
     </div>
-    <div v-else-if="data.artisan_data && !data.entries_data.miis_data" class="p-20 w-full h-30 rounded-[18px] border-4 border-gray-400 dark:border-slate-500 border-dashed flex items-center justify-center relative">
+    <div v-if="data.entries_data.miis_data.length === 0" class="p-20 w-full h-30 rounded-[18px] border-4 border-gray-400 dark:border-slate-500 border-dashed flex items-center justify-center relative">
       <div class="flex flex-col items-center gap-3 text-gray-500 dark:text-slate-400">
-        <i class="fa-solid fa-magnifying-glass text-6xl"/>
+        <Icon name="fa6-solid:magnifying-glass" class="text-6xl"  />
         <h2 class="w-96 text-center relative">
           {{ data.artisan_data.name }} has posted no Miis. Once they do, they will be shown here...
         </h2>
@@ -97,14 +114,3 @@ const { data, status } = useAsyncData(artisanAsyncName.value, () => {
     </div>
     </div>
 </template>
-
-<style>
-  .sm-width {
-    width:auto;
-  }
-  @media only screen and (max-width: 640px) {
-    .sm-width {
-      width:100%;
-    }
-  }
-</style>
