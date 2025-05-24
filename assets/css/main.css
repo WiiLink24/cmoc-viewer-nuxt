@@ -67,7 +67,7 @@
     }
 
     .btn {
-    @apply p-4 pl-8 pr-8 border-2 border-gray-200 bg-gray-200 hover:bg-gray-300 hover:border-gray-500 dark:border-slate-800 dark:bg-slate-600 dark:hover:bg-slate-700 text-black transition-all;
+    @apply p-4 pl-8 pr-8 border-2 border-gray-200 bg-gray-200 hover:bg-gray-300 hover:border-gray-500 dark:border-slate-800 dark:bg-slate-600 dark:hover:bg-slate-700 text-black dark:text-white transition-all;
   }
 
   .bg-gold {
@@ -86,5 +86,26 @@
 @layer utilities {
     .container {
         @apply max-w-screen-xl mx-auto px-3 sm:px-5 md:px-10 lg:px-16 overflow-hidden;
+    }
+
+    .scroll-container {
+        @apply overflow-x-hidden pb-5 whitespace-nowrap relative
+        before:content-[''] before:absolute before:pointer-events-none before:top-0 before:bottom-0 before:w-25 before:z-2 before:left-0 before:bg-gradient-to-r before:from-white before:to-transparent
+        after:content-[''] after:absolute after:pointer-events-none after:top-0 after:bottom-0 after:w-25 after:z-2 after:right-0 after:bg-gradient-to-l after:from-white after:to-transparent
+        dark:before:bg-gradient-to-r dark:before:from-slate-800 dark:before:to-transparent
+        dark:after:bg-gradient-to-l dark:after:from-slate-800 dark:after:to-transparent;
+    }
+    
+    .scroll-container .mt-3 {
+        @apply inline-flex animate-[scrollAnimation_300s_linear_infinite];
+    }
+    
+    @keyframes scrollAnimation {
+        from {
+            transform: translateX(0);
+        }
+        to {
+            transform: translateX(-50%);
+        }
     }
 }

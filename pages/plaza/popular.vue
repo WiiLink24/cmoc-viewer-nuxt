@@ -30,7 +30,7 @@ const { data, status } = await useAsyncData('popular', () => {
         <TitlePage>Popular</TitlePage>
         <LoadingAnimation v-if="status === 'pending'" />
         <template v-if="data">
-            <p class="-translate-y-20 text-right opacity-45 text-black">
+            <p class="-translate-y-20 text-right opacity-45">
                 There are {{ 50 * data.total_pages-1 }}+ Miis in the Plaza!
             </p>
             <div>
