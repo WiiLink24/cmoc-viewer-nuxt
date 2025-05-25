@@ -7,7 +7,7 @@ useHead({
   ],
 })
 
-const { data } = await useAsyncData('contests-previous', async () => {
+const { data, error } = await useAsyncData('contests-previous', async () => {
     return $fetch('/api/contests')
 })
 
@@ -17,32 +17,38 @@ const closed_contests = data.value?.filter((contest) => contest.status === 'clos
 </script>
 
 <template>
-    <div>
-        <ul v-if="judging_contests.length > 0" class="flex flex-col gap-3">
+    <div class="space-y-7">
+        <section v-if="judging_contests && judging_contests.length > 0" class="space-y-3">
             <h2>Contests being judged</h2>
-            <div v-for="contest in judging_contests" :key="contest.contestId">
-            <NuxtLink :href="{ name: 'contests-id', params: { id: contest.contestId }}">
-                <ContestCard  v-bind="contest" />
-            </NuxtLink>
-        </div>
-        </ul>
-        <ul v-if="results_contests.length > 0" class="flex flex-col gap-3">
+            <ul class="flex flex-col gap-3 group">
+                <li v-for="contest in judging_contests" :key="contest.contestId" class="group-hover:opacity-50 group-hover:duration-200 group-hover:transition-opacity hover:opacity-100">
+                <NuxtLink :href="{ name: 'contests-id', params: { id: contest.contestId }}">
+                    <ContestCard  v-bind="contest" class="w-full" />
+                </NuxtLink>
+            </li>
+            </ul>
+        </section>
+        <section v-if="results_contests && results_contests.length > 0" class="space-y-3">
             <h2>Contests displaying results</h2>
-            <div v-for="contest in results_contests" :key="contest.contestId">
-            <NuxtLink :href="{ name: 'contests-id', params: { id: contest.contestId }}">
-                <ContestCard v-bind="contest" />
-            </NuxtLink>
-        </div>
-        </ul>
-        <ul v-if="closed_contests.length > 0" class="flex flex-col gap-3">
+            <ul class="flex flex-col gap-3 group">
+                <li v-for="contest in results_contests" :key="contest.contestId" class="group-hover:opacity-50 group-hover:duration-200 group-hover:transition-opacity hover:opacity-100">
+                <NuxtLink :href="{ name: 'contests-id', params: { id: contest.contestId }}">
+                    <ContestCard v-bind="contest" class="w-full" />
+                </NuxtLink>
+            </li>
+            </ul>
+        </section>
+        <section v-if="closed_contests && closed_contests.length > 0" class="space-y-3">
             <h2>Closed contests</h2>
-            <div v-for="contest in closed_contests" :key="contest.contestId">
-            <NuxtLink :href="{ name: 'contests-id', params: { id: contest.contestId }}">
-                <ContestCard v-bind="contest" />
-            </NuxtLink>
-        </div>
-        </ul>
-        <div v-else class="text-red-500">
+            <ul class="flex flex-col gap-3 group">
+                <li v-for="contest in closed_contests" :key="contest.contestId" class="group-hover:opacity-50 group-hover:duration-200 group-hover:transition-opacity hover:opacity-100">
+                <NuxtLink :href="{ name: 'contests-id', params: { id: contest.contestId }}">
+                    <ContestCard v-bind="contest" class="w-full" />
+                </NuxtLink>
+            </li>
+            </ul>
+        </section>
+        <div v-if="error" class="text-red-500">
         <div class="p-20 w-full h-30 rounded-[18px] border-4 border-gray-400 dark:border-slate-500 border-dashed flex items-center justify-center relative">
         <div class="flex flex-col items-center gap-3 text-gray-500 dark:text-slate-400">
             <i class="fa-solid fa-bomb text-6xl"/>

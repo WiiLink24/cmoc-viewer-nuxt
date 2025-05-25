@@ -16,12 +16,12 @@ const contests = data.value?.filter((contest) => contest.status === 'open')
 
 <template>
     <div>
-        <ul v-if="contests" class="flex flex-col gap-3">
-            <div v-for="contest in contests" :key="contest.contestId">
+        <ul v-if="contests" class="flex flex-col gap-3 group">
+            <li v-for="contest in contests" :key="contest.contestId" class="group-hover:opacity-50 group-hover:duration-200 group-hover:transition-opacity hover:opacity-100">
             <NuxtLink :href="{ name: 'contests-id', params: { id: contest.contestId }}">
-                <ContestCard v-bind="contest" />
+                <ContestCard v-bind="contest" class="w-full" />
             </NuxtLink>
-            </div>
+            </li>
         </ul>
         <div v-else class="text-red-500">
         <div class="p-20 w-full h-30 rounded-[18px] border-4 border-gray-400 dark:border-slate-500 border-dashed flex items-center justify-center relative">
