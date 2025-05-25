@@ -14,6 +14,10 @@ export default defineEventHandler(async (event) => {
         where: (contests, { eq }) => eq(contests.contestId, contestId),
     })
 
+    if (!contest_query) {
+      throw createError({statusCode: 404, statusMessage: "Not found", message: "Contest not found"})
+    }
+
     const entries_query = await db.query.contestMiis
       .findMany({
         where: (contestMiis, { eq }) => eq(contestMiis.contestId, contestId),
@@ -44,6 +48,6 @@ export default defineEventHandler(async (event) => {
     
     const entries = { total_pages, data }
 
-    const response = { contest_query, entries }
+    const response = { contest: contest_query, entries }
     return response
 })
