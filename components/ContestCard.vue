@@ -3,13 +3,13 @@ const url = useRuntimeConfig().public.CMOC_SERVER
 
 interface ContestProps {
   contestId: number,
-  englishName: string,
-  status:  'open' | 'judging' | 'results' | 'closed',
-  openTime: string,
-  closeTime: string,
-  hasSouvenir: boolean,
-  hasThumbnail: boolean,
-  hasSpecialAward: boolean
+  englishName: string | null,
+  status:  'open' | 'judging' | 'results' | 'closed' | string | null,
+  openTime: string | null,
+  closeTime: string | null,
+  hasSouvenir: boolean | null,
+  hasThumbnail: boolean | null,
+  hasSpecialAward: boolean | null,
 }
 
 const props = defineProps<ContestProps>()
@@ -28,14 +28,14 @@ watch(hover, (newValue) => {
 const currentDate = new Date()
 
 const daysRemaining = computed(() => {
-  const closeDate = new Date(props.closeTime)
+  const closeDate = new Date(props.closeTime!)
   const differenceInTime = closeDate.getTime() - currentDate.getTime()
   const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24))
   return differenceInDays
 })
 
 const isNew = computed(() => {
-  const openDate = new Date(props.openTime);
+  const openDate = new Date(props.openTime!);
   const differenceInTime = openDate.getTime() - currentDate.getTime()
   const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
   return differenceInDays < 5 && differenceInDays > 0;
@@ -43,16 +43,14 @@ const isNew = computed(() => {
 </script>
 
 <template>
-  <li :style="{ rotate: `${rotationDegree}deg` }" class="list-none normal-case rounded-3xl w-100 h-50 shadow-[0px_0px_60px_#d3d68c60] hover:no-underline hover:shadow-lg hover:scale-105 transition-all" @mouseenter="hover = true" @mouseleave="hover = false">
+  <div :style="{ rotate: `${rotationDegree}deg` }" class="list-none normal-case rounded-3xl w-100 h-50 shadow-[0px_0px_60px_#d3d68c60] hover:no-underline hover:shadow-lg hover:scale-105 transition-all" @mouseenter="hover = true" @mouseleave="hover = false">
       <div
         class="p-2 rounded-3xl border-[5px] border-white bg-[rgb(76,130,163)] shadow-2xl z-10 relative"
       >
         <div class="flex flex-row items-center justify-between">
-          <p class="ml-1 text-white text-lg">
-            <span v-if="daysRemaining < 0">The contest has ended!</span>
-            <span v-else-if="daysRemaining === 1">{{ daysRemaining }} day remaining</span>
-            <span v-else>{{ daysRemaining }} days remaining</span>
-          </p>
+            <p class="ml-1 text-white text-lg">
+            <span>{{ daysRemaining < 0 ? 'The contest has ended!' : daysRemaining === 1 ? `${daysRemaining} day remaining` : `${daysRemaining} days remaining` }}</span>
+            </p>
           <div class="flex flex-row items-center">
             <p class="first-letter:uppercase">
               {{ status }}
@@ -80,5 +78,5 @@ const isNew = computed(() => {
         class="w-80 hidden rounded-3xl shadow-2xl z-0 absolute !right-0 -translate-x-full -translate-y-[70%] rotate-3"
         alt="Thumbnail Preview"
       >
-  </li>
+  </div>
 </template>

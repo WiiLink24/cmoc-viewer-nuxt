@@ -6,18 +6,19 @@ import twemoji from 'twemoji';
 interface MiiProps {
     entryId: number | null
     miiData: string | null
-    nickname: string | null
-    countryId: number | null
-    skill: number | null
-    permLikes: number | null
-    initials: string | null
-    gender: number | null
+    nickname?: string | null
+    countryId?: number | null
+    skill?: number | null
+    permLikes?: number | null
+    initials?: string | null
+    gender?: number | null
     ranking?: number | null
     artisan?: {
         artisanId: number
         name: string
         isMaster: boolean
-    } | null
+    } | null,
+    likes?: number | null
 }
 
 const props = defineProps<MiiProps>()
@@ -87,7 +88,7 @@ const copyToClipboard = (text: string) => {
             <span class="flex flex-col gap-1">
                 <span>
                     <Icon name="fa6-solid:thumbs-up" class="text-xl" />
-                    {{ props.permLikes }}
+                    {{ props.permLikes || props.likes }}
                 </span>
                 <span v-if="props.artisan?.name" class="text-sm opacity-60">
                     by
