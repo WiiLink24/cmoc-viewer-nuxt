@@ -1,6 +1,5 @@
+<!-- eslint-disable vue/prop-name-casing -->
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue'
-
 const props = defineProps<{
   total_pages: number,
   current_page: number
@@ -8,26 +7,27 @@ const props = defineProps<{
 
 const emit = defineEmits(['update:current_page'])
 
+const { y } = useWindowScroll()
+
+
 const incrementPage = () => {
   if (props.current_page < props.total_pages) {
-    document.body.scrollTop = 0
-    document.documentElement.scrollTop = 0
+    y.value = 0
     emit('update:current_page', props.current_page + 1)
   }
 }
 
 const decrementPage = () => {
   if (props.current_page > 1) {
-    document.body.scrollTop = 0
-    document.documentElement.scrollTop = 0
+    y.value = 0
     emit('update:current_page', props.current_page - 1)
   }
 }
 
 const emitCurrentPage = () => {
   //fetch input value
-  const input = document.getElementById('pageinput')
-  emit('update:current_page', parseInt(input.value))
+  const input = document.getElementById('pageinput') as HTMLInputElement | null
+  emit('update:current_page', parseInt((input?.value || '1')))
 }
 </script>
 
@@ -46,8 +46,8 @@ const emitCurrentPage = () => {
         <Icon name="fa6-solid:chevron-left" class="text-md" />
       </button>
       <input
-        type="number"
         id="pageinput"
+        type="number"
         :class="{
           'rounded-l-lg': props.current_page > 1 && props.current_page < props.total_pages,
           'rounded-r-lg': props.current_page < props.total_pages,
@@ -61,10 +61,9 @@ const emitCurrentPage = () => {
           'border-top-right-radius': props.current_page < props.total_pages ? '6px' : '18px',
           'border-bottom-right-radius': props.current_page < props.total_pages ? '6px' : '18px'
         }"
-        class="p-3 bg-white/0 border-2 border-gray-300 hover:border-gray-200 dark:hover:border-slate-600 dark:border-slate-700 rounded-lg w-[70px] text-center transition-all"
         :value="props.current_page"
+        class="p-3 bg-white/0 border-2 border-gray-300 hover:border-gray-200 dark:hover:border-slate-600 dark:border-slate-700 rounded-lg w-[70px] text-center transition-all"
         @keyup.enter="emitCurrentPage"
-        @change="updateArrows"
       >
       <button
         v-if="props.current_page < props.total_pages"
