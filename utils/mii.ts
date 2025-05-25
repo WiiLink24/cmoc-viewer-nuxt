@@ -1,7 +1,7 @@
 export function downloadMii(
   name: string | [number, number],
   entry_id: string,
-  mii_data: any
+  mii_data: string
 ) {
   // Decode base64 string
   const binaryString = atob(mii_data);

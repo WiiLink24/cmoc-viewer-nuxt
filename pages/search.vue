@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Artisan, Mii } from '~/drizzle/schema'
+
 useHead({
   title: 'Search | CMOC Viewing Tool',
   meta: [
@@ -102,22 +104,22 @@ const { data, status, execute, clear } = await useFetch(search_url, {
     </div>
 
     <div v-if="data">
-  <div>
-    <div v-if="data.data.length > 0 && search_type === 'miis'">
-    <ul v-if="status !== 'pending'" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 sm:gap-10 gap-3">
-      <MiiCardNew v-for="result in data.data" :key="result.entryId!" v-bind="result" />
-    </ul>
-    <LoadingAnimation v-if="status === 'pending'" />
+    <div>
+      <div v-if="data.data.length > 0 && search_type === 'miis'">
+      <ul v-if="status !== 'pending'" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 sm:gap-10 gap-3">
+        <MiiCardNew v-for="result in data.data as Mii[]" :key="result.entryId" v-bind="result" />
+      </ul>
+      <LoadingAnimation v-if="status === 'pending'" />
       <PageNavigation
         :current_page="current_page"
         :total_pages="data.total_pages"
         class="mt-10"
         @update:current_page="(value) => { current_page = value; $router.push({ query: { page: value } }), execute() }"
       />
-  </div>
+    </div>
     <div v-else-if="data.data.length > 0 && search_type === 'artisans'">
     <ul v-if="status !== 'pending'" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 sm:gap-10 gap-3">
-      <ArtisanCard v-for="result in data.data" :key="result.artisanId!" v-bind="result" />
+      <ArtisanCard v-for="result in data.data as Artisan[]" :key="result.artisanId!" v-bind="result" />
     </ul>
     <LoadingAnimation v-if="status === 'pending'" />
       <PageNavigation

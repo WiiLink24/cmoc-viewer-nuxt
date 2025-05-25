@@ -56,7 +56,7 @@ const isArtisanNumberValid = computed(() => {
             <div class="w-full mb-3 flex sm:flex-row sm:w-full flex-col sm:items-center items-start justify-between gap-3 relative">
         <button 
         class="p-3 pl-6 pr-6 w-full lg:w-auto bg-green-500/60 border-1 border-green-60 backdrop-blur-md rounded-md hover:bg-green-600 transition-all"
-        @click="downloadMii(data.artisan_data.name!, data.artisan_data.artisanId.toString(), data.artisan_data.miiData)"
+        @click="downloadMii(data.artisan_data.name!, data.artisan_data.artisanId.toString(), data.artisan_data.miiData!)"
         ><Icon name="fa6-solid:download" /> Download {{ data.artisan_data.name }}'s Mii</button>
         <span v-if="data.artisan_data.isMaster" class="w-full lg:w-auto p-1 pl-2 pr-2 text-md font-bold text-center select-none rounded-full bg-orange-400"
         >◆ Master Mii Artisan ◆

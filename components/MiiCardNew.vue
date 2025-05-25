@@ -15,10 +15,11 @@ interface MiiProps {
     ranking?: number | null
     artisan?: {
         artisanId: number
-        name: string
+        name: string | null
         isMaster: boolean
     } | null,
     likes?: number | null
+    contestId?: number | null
 }
 
 const props = defineProps<MiiProps>()
@@ -67,10 +68,10 @@ const copyToClipboard = (text: string) => {
             <!-- eslint-disable-next-line vue/no-v-html -->
             <span class="self-end text-2xl" v-html="countryFlagHTML" />
             <div class="group">
-                <button class="top-2 left-2 rounded tooltip shadow-lg p-2 px-3 bg-green-600 hover:bg-green-700 text-white cursor-pointer absolute opacity-0 transition-opacity group-hover:opacity-100" @click="props.nickname ? downloadMii(props.nickname, encoded_entry, props.miiData) : downloadMii([contest_id, ranking], encoded_entry, props.miiData)">
+                <button class="top-2 left-2 rounded tooltip shadow-lg p-2 px-3 bg-green-600 hover:bg-green-700 text-white cursor-pointer absolute opacity-0 transition-opacity group-hover:opacity-100" @click="props.nickname ? downloadMii(props.nickname, encodedEntryId, props.miiData!) : downloadMii([props.contestId!, props.ranking!], encodedEntryId, props.miiData!)">
                     <Icon name="fa6-solid:download" />
                 </button>
-                <img :src="mii_img" :alt="`${props.nickname}'s Mii`" class="w-28 bottom-3 cursor-pointer relative miiImg" @click="props.nickname ? downloadMii(props.nickname, encoded_entry, props.miiData) : downloadMii([contest_id, ranking], encoded_entry, props.miiData)">
+                <img :src="mii_img" :alt="`${props.nickname}'s Mii`" class="w-28 bottom-3 cursor-pointer relative miiImg" @click="props.nickname ? downloadMii(props.nickname, encodedEntryId, props.miiData!) : downloadMii([props.contestId!, props.ranking!], encodedEntryId, props.miiData!)">
             </div>
         <h1 class="text-3xl relative bottom-3 text-center flex flex-col gap-1">
             {{ props.nickname }}
