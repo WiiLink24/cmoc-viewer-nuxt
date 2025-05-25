@@ -98,19 +98,21 @@ const isArtisanNumberValid = computed(() => {
         class="mt-10"
         @update:current_page="(value) => { current_page = value; router.push({ query: { page: value } }) }" />
     </div>
-    <div v-if="data.entries_data.miis_data.length === 0" class="p-20 w-full h-30 rounded-[18px] border-4 border-gray-400 dark:border-slate-500 border-dashed flex items-center justify-center relative">
-      <div class="flex flex-col items-center gap-3 text-gray-500 dark:text-slate-400">
-        <Icon name="fa6-solid:magnifying-glass" class="text-6xl"  />
-        <h2 class="w-96 text-center relative">
-          {{ data.artisan_data.name }} has posted no Miis. Once they do, they will be shown here...
-        </h2>
-      </div>
-    </div>
-  </div>
-  <div v-else class="container p-20 w-full h-30 translate-y-14 rounded-[18px] border-4 border-gray-400 dark:border-slate-500 border-dashed flex items-center justify-center relative">
+    <div>
+      <div v-if="data.entries_data.miis_data.length === 0" class="p-20 w-full h-30 rounded-[18px] border-4 border-gray-400 dark:border-slate-500 border-dashed flex items-center justify-center relative">
         <div class="flex flex-col items-center gap-3 text-gray-500 dark:text-slate-400">
-          <div class="flex flex-row gap-3 items-center"><Icon name="fa6-solid:bomb" class="text-6xl" /></div>
-        <h2 class="w-96 text-center relative">The Mii Artisan you were looking for could not be found...</h2>
-    </div>
+          <Icon name="fa6-solid:magnifying-glass" class="text-6xl"  />
+          <h2 class="w-96 text-center relative">
+            {{ data.artisan_data.name }} has posted no Miis. Once they do, they will be shown here...
+          </h2>
+        </div>
+      </div>
+        </div>
+        <div v-if="status === 'error'" class="container p-20 w-full h-30 translate-y-14 rounded-[18px] border-4 border-gray-400 dark:border-slate-500 border-dashed flex items-center justify-center relative">
+          <div class="flex flex-col items-center gap-3 text-gray-500 dark:text-slate-400">
+            <div class="flex flex-row gap-3 items-center"><Icon name="fa6-solid:bomb" class="text-6xl" /></div>
+          <h2 class="w-96 text-center relative">The Mii Artisan you were looking for could not be found...</h2>
+      </div>
+      </div>
     </div>
 </template>
