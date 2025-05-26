@@ -10,7 +10,6 @@ export default defineNuxtConfig({
     "@nuxt/fonts",
     "@nuxt/icon",
     "@vueuse/nuxt",
-    /* "@scalar/nuxt", */
   ],
   css: ["~/assets/css/main.css"],
   vite: {
@@ -20,8 +19,8 @@ export default defineNuxtConfig({
     public: {
       CMOC_SERVER: process.env.CMOC_SERVER || ''
     }
-  }
-  /* nitro: {
+  },
+  nitro: {
     experimental: {
       openAPI: true,
     },
@@ -32,13 +31,12 @@ export default defineNuxtConfig({
         description: "documentation for cmoc you know the drill",
         version: "2.0",
       },
+      ui: {
+        scalar: {
+          route: "/docs"
+        },
+        
+      }
     },
   },
-  scalar: {
-    searchHotKey: "k",
-    metaData: {
-      title: "API Documentation | CMOC Viewing Tool",
-    },
-    devtools: true
-  }, */
 });
