@@ -38,7 +38,7 @@ export default defineEventHandler(async () => {
     });
 
     return results.map((row) => {
-      return { ...row, miiData: row.miiData ? convertToB64(row.miiData) : "" };
+      return { ...row, miiData: row.miiData ? convertToB64(row.miiData as unknown as Uint8Array) : "" };
     });
   } catch (error) {
     throw createError({ statusCode: 500, statusMessage: error as string})
